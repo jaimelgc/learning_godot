@@ -5,7 +5,6 @@
 
 [node name="Player" type="CharacterBody2D" unique_id=697841661]
 position = Vector2(0, 1)
-collision_mask = 6
 script = ExtResource("1_g2els")
 
 [node name="PlayerSprite" type="Sprite2D" parent="." unique_id=1498758587]
