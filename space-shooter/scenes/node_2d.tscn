@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cwteq6fcfragf"]
+
+[ext_resource type="Texture2D" uid="uid://cy2rkcukgu6m7" path="res://assets/PNG/playerShip1_orange.png" id="1_6e84v"]
+
+[node name="Player" type="Node2D" unique_id=136140647]
+scale = Vector2(2, 2)
+
+[node name="PlayerSprite" type="Sprite2D" parent="." unique_id=1498758587]
+position = Vector2(0, -1.5)
+texture = ExtResource("1_6e84v")
