@@ -17,19 +17,37 @@ func _input(event):
 		if event.pressed:
 			var card = raycast_check_for_card()
 			if card:
-				card_being_dragged = card
+				start_drag(card)
 		else:
-			card_being_dragged = null
+			finish_drag()
+			
+func start_drag(card):
+	card_being_dragged = card
+	card.scale = Vector2(1, 1)
+
+	
+func finish_drag():
+	card_being_dragged.scale = Vector2(1.05, 1.05)
+	card_being_dragged = null
+
+
 		
 func connect_card_signals(card):
 	card.connect('hovered', on_hovered_over_card)
 	card.connect('hovered_out', on_hovered_out_card)
 	
 func on_hovered_over_card(card):
-	highlight_card(card, true)
+	if !is_hovering_on_card:
+		is_hovering_on_card = true
+		highlight_card(card, true)
 	
 func on_hovered_out_card(card):
-	highlight_card(card, false)
+		highlight_card(card, false)
+		var new_card_hovered = raycast_check_for_card()
+		if new_card_hovered:
+			highlight_card(new_card_hovered, true)
+		else:
+			is_hovering_on_card = false
 	
 func highlight_card(card, hovered):
 	if hovered:
@@ -47,6 +65,16 @@ func raycast_check_for_card():
 	parameters.collision_mask = 1
 	var result = space_state.intersect_point(parameters)
 	if result:
-		return result[0].collider.get_parent()
+		return get_card_on_top(result)
 	return null
 	
+func get_card_on_top(cards):
+	var card_on_top = cards[0].collider.get_parent()
+	var top_index = card_on_top.z_index
+	
+	for i in range(1, len(cards)):
+		var current_card = cards[i].collider.get_parent()
+		if current_card.z_index > top_index:
+			card_on_top = current_card
+			top_index = current_card.z_index
+	return card_on_top
